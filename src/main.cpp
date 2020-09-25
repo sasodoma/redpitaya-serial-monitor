@@ -9,26 +9,26 @@
 #include "main.h"
 
 
-
+CStringParameter data ("data", CBaseParameter::RW, "", 0);
 
 
 
 const char *rp_app_desc(void)
 {
-    return (const char *)"Template application.\n";
+    return (const char *)"Red Pitaya serial monitor.\n";
 }
 
 
 int rp_app_init(void)
 {
-    fprintf(stderr, "Loading template application\n");
+    fprintf(stderr, "Loading serial monitor\n");
     return 0;
 }
 
 
 int rp_app_exit(void)
 {
-    fprintf(stderr, "Unloading template application\n");
+    fprintf(stderr, "Unloading serial monitor\n");
     return 0;
 }
 
@@ -63,7 +63,10 @@ void UpdateSignals(void){}
 void UpdateParams(void){}
 
 
-void OnNewParams(void) {}
+void OnNewParams(void) {
+	data.Update();
+	fprintf(stdout, data.Value());
+}
 
 
 void OnNewSignals(void){}

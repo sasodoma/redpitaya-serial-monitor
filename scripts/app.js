@@ -89,6 +89,12 @@ function(APP, $, undefined) {
 
 // Page onload event handler
 $(function() {
+	$('#send').click(function() {
+		let payload = {};
+		payload.parameters = {};
+		payload.parameters['data'] = $('#message').val();
+		APP.ws.send(JSON.stringify(payload));
+	});
     // Start application
     APP.startApp();
 });
