@@ -1,6 +1,6 @@
 {
-    "name": "Template application",
-    "version": "0.94-31",
-    "revision": "ca8ae99",
-    "description": "Simple way to create your application on the Red Pitaya"
+    "name": "Serial monitor",
+    "version": "1.0",
+    "revision": "1.0",
+    "description": "Serial monitor for the Red Pitaya's serial port"
 }
