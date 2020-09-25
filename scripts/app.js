@@ -6,11 +6,12 @@
  */
 
 
-(function(APP, $, undefined) {
+(
+function(APP, $, undefined) {
     
     // App configuration
     APP.config = {};
-    APP.config.app_id = '1.template';
+    APP.config.app_id = 'redpitaya-serial-monitor';
     APP.config.app_url = '/bazaar?start=' + APP.config.app_id + '?' + location.search.substr(1);
     APP.config.socket_url = 'ws://' + window.location.hostname + ':9002';
 
@@ -62,7 +63,6 @@
         if (APP.ws) {
 
             APP.ws.onopen = function() {
-                $('#hello_message').text("Hello, Red Pitaya!");
                 console.log('Socket opened');               
             };
 
@@ -71,17 +71,18 @@
             };
 
             APP.ws.onerror = function(ev) {
-                $('#hello_message').text("Connection error");
+                //$('#hello_message').text("Connection error");
                 console.log('Websocket error: ', ev);         
             };
 
             APP.ws.onmessage = function(ev) {
-                console.log('Message recieved');
+                console.log('Message recieved', ev);
             };
         }
     };
 
-}(window.APP = window.APP || {}, jQuery));
+}(window.APP = window.APP || {}, jQuery)
+);
 
 
 
