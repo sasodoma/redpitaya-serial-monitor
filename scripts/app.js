@@ -98,7 +98,7 @@ $(function() {
 		}
 		let payload = {};
 		payload.parameters = {};
-		payload.parameters['data'] = {value: $('#message').val() + lineEnding};
+		payload.parameters['dataout'] = {value: $('#message').val() + lineEnding};
 		APP.ws.send(JSON.stringify(payload));
 	});
     // Start application
