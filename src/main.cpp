@@ -133,7 +133,7 @@ void OnNewParams(void) {
 	data_out.Update();
 	const char *write_buffer = data_out.Value().c_str();
 	size_t write_length = data_out.Value().length();
-	write(serial_port, &write_buffer, write_length);
+	write(serial_port, write_buffer, write_length);
 	data_out.Set("");
 }
 
