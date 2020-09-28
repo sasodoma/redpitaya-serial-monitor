@@ -92,7 +92,7 @@ $(function() {
 	$('#send').click(function() {
 		let payload = {};
 		payload.parameters = {};
-		payload.parameters['data'] = $('#message').val();
+		payload.parameters['data'] = {value: $('#message').val()};
 		APP.ws.send(JSON.stringify(payload));
 	});
     // Start application
