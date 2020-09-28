@@ -90,9 +90,15 @@ function(APP, $, undefined) {
 // Page onload event handler
 $(function() {
 	$('#send').click(function() {
+		let lineEnding = '';
+		switch($('#newline').val()) {
+			case 'lf': lineEnding = '\n'; break;
+			case 'cr': lineEnding = '\r'; break;
+			case 'crlf': lineEnding = '\r\n'; break;
+		}
 		let payload = {};
 		payload.parameters = {};
-		payload.parameters['data'] = {value: $('#message').val()};
+		payload.parameters['data'] = {value: $('#message').val() + lineEnding};
 		APP.ws.send(JSON.stringify(payload));
 	});
     // Start application
