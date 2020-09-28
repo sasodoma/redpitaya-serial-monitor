@@ -2,8 +2,6 @@
 
 #include <CustomParameters.h>
 
-#include "rpApp.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
