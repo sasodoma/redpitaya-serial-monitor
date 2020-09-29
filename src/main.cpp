@@ -127,8 +127,8 @@ void UpdateSignals(void){}
 
 
 void UpdateParams(void){
-	char read_buffer[READ_AT_ONCE + 1]; // Leave space for terminating character
-	int read_length = read(serial_port, &read_buffer, READ_AT_ONCE);
+	char read_buffer[READ_AT_ONCE + 1] = "This is just for testing"; // Leave space for terminating character
+	int read_length = 9; //read(serial_port, &read_buffer, READ_AT_ONCE);
 	if (read_length > 0) {
 		read_buffer[read_length] = 0;
 		data_in.Set(read_buffer);

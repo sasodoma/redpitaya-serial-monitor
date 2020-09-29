@@ -76,7 +76,12 @@ function(APP, $, undefined) {
             };
 
             APP.ws.onmessage = function(ev) {
-                console.log('Message recieved', ev);
+				var data = new Uint8Array(ev.data);
+				var inflate = pako.inflate(data);
+				var text = String.fromCharCode.apply(null, new Uint8Array(inflate));
+				var receive = JSON.parse(text);
+
+                console.log('Message recieved', receive);
             };
         }
     };
