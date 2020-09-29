@@ -80,8 +80,11 @@ function(APP, $, undefined) {
 				var inflate = pako.inflate(data);
 				var text = String.fromCharCode.apply(null, new Uint8Array(inflate));
 				var receive = JSON.parse(text);
-
-                console.log('Message recieved', receive);
+				
+				if (receive.parameters && receive.parameters.datain) {
+					$('#console').val($('#console').val() + receive.parameters.datain.value);
+					console.log('Message recieved', receive);
+				}
             };
         }
     };
