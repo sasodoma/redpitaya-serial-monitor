@@ -133,7 +133,7 @@ void UpdateSignals(void){}
 void UpdateParams(void){
 	FD_SET(serial_port, &readfs); // Set port to be monitored
 	struct timeval read_timeout = {0, 0}; // Return immediately if no data
-	int res = select(serial_port + 1, &readfs, NULL, NULL, &timeout);
+	int res = select(serial_port + 1, &readfs, NULL, NULL, &read_timeout);
 	if (res) {
 		int read_length = read(serial_port, &read_buffer, READ_AT_ONCE);
 		if (read_length > 0) {
