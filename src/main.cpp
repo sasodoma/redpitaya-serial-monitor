@@ -13,6 +13,8 @@
 #include <errno.h> // Error integer and strerror() function
 #include <termios.h> // Contains POSIX terminal control definitions
 #include <unistd.h> // write(), read(), close()
+#include <sys/time.h> // Used for timeout
+#include <sys/types.h>//      -||-
 
 #include "main.h"
 #include "rpApp.h"
@@ -23,7 +25,9 @@
 CStringParameter data_out ("dataout", CBaseParameter::RW, "", 0); // Data out of serial
 CStringParameter data_in ("datain", CBaseParameter::RW, "", 0);   // Data in from serial
 
-int serial_port;
+int serial_port;  // A file descriptor for the port
+char read_buffer[READ_AT_ONCE + 1]; // Leave space for terminating character
+fd_set readfs; // A set of file descriptors, used for select
 
 int uart_init() {
     int serial_port = -1;
@@ -127,13 +131,16 @@ void UpdateSignals(void){}
 
 
 void UpdateParams(void){
-	char read_buffer[READ_AT_ONCE + 1] = "This is just for testing"; // Leave space for terminating character
-	int read_length = 9; //read(serial_port, &read_buffer, READ_AT_ONCE);
-	if (read_length > 0) {
-		read_buffer[read_length] = 0;
-		data_in.Set(read_buffer);
+	FD_SET(serial_port, &readfs); // Set port to be monitored
+	struct timeval read_timeout = {0, 0}; // Return immediately if no data
+	int res = select(serial_port + 1, &readfs, NULL, NULL, &timeout);
+	if (res) {
+		int read_length = read(serial_port, &read_buffer, READ_AT_ONCE);
+		if (read_length > 0) {
+			read_buffer[read_length] = 0;
+			data_in.Set(read_buffer);
+		}
 	}
-
 }
 
 
