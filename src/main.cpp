@@ -17,6 +17,7 @@
 #include "main.h"
 #include "rpApp.h"
 
+#define READ_AT_ONCE 128 // The number of bytes to read in a single read call
 #define BAUD_RATE B230400
 
 CStringParameter data_out ("dataout", CBaseParameter::RW, "", 0); // Data out of serial
@@ -63,7 +64,7 @@ int uart_init() {
 
     // If either of these limits is reached the read function returns
     tty.c_cc[VTIME] = 1; // Interbyte timeout (in deciseconds)
-    tty.c_cc[VMIN] = 128; // Number of characters to read before returning
+    tty.c_cc[VMIN] = READ_AT_ONCE; // Number of characters to read before returning
 
     // Set in/out baud rate
     cfsetispeed(&tty, BAUD_RATE);
@@ -102,6 +103,7 @@ int rp_app_init(void) {
 
 int rp_app_exit(void) {
     fprintf(stderr, "Unloading serial monitor\n");
+	uart_close(serial_port);
     return 0;
 }
 
@@ -125,12 +127,19 @@ void UpdateSignals(void){}
 
 
 void UpdateParams(void){
+	char read_buffer[READ_AT_ONCE + 1]; // Leave space for terminating character
+	int read_length = read(serial_port, &read_buffer, READ_AT_ONCE);
+	if (read_length > 0) {
+		read_buffer[read_length] = 0;
+		data_in.Set(read_buffer);
+	}
 
 }
 
 
 void OnNewParams(void) {
 	data_out.Update();
+	data_in.Update();
 	const char *write_buffer = data_out.Value().c_str();
 	size_t write_length = data_out.Value().length();
 	write(serial_port, write_buffer, write_length);
